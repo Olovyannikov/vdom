@@ -1,0 +1,194 @@
+html {
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 8px;
+    line-height: 1.2;
+}
+
+.app {
+    max-width: 500px;
+}
+
+.header {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.header .logo {
+    display: block;
+    width: 96px;
+    height: 96px;
+}
+
+.header nav {
+    margin-left: auto;
+}
+
+.header nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.header nav ul li {
+    margin: 0 15px 0 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.header nav ul li:last-child {
+    margin: 0;
+}
+
+a {
+    color: #000;
+}
+
+.header nav ul li a.active {
+    font-weight: bold;
+}
+
+.page {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.page h1 {
+    margin: 0 0 20px 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.page p:last-child {
+    margin: 0;
+}
+
+.clock {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.clock .value {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.clock .icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+}
+
+.clock .icon.day {
+    background-color: #ef7b00;
+}
+
+.clock .icon.night {
+    background-color: #2459a7;
+}
+
+.lot {
+    position: relative;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.lot.favorite {
+    border-color: #ffd7cb;
+    background: #ffd7cb;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    outline: none;
+}
+
+button:disabled {
+    cursor: wait;
+}
+
+button * {
+    vertical-align: middle;
+}
+
+button.favorite {
+    background: #fff;
+    border: 1px solid #999;
+    color: #000;
+}
+
+button.favorite:disabled {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #ccc;
+}
+
+button.unfavorite {
+    background: #fff;
+    border: 1px solid #ff8c68;
+    color: #dc0000;
+}
+
+button.unfavorite:disabled {
+    border: 1px solid #ffc0ad;
+    color: #ff8c68;
+}
+
+.lot .price {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+}
+
+.lot h1 {
+    margin: 0 0 15px 0;
+    line-height: 1;
+}
+
+.lot p {
+    margin: 0 0 15px 0;
+}
+
+.loading {
+    padding: 15px;
+    border-radius: 6px;
+    background: #eee;
+    text-align: center;
+}
+
+.error {
+    padding: 15px;
+    border-radius: 6px;
+    background: #ff5252;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+}
+
+.error span,
+.error ion-icon {
+    display: flex;
+    vertical-align: middle;
+}
+
+.error ion-icon {
+    margin-left: auto;
+    cursor: pointer;
+}
