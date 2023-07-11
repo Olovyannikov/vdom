@@ -57,7 +57,7 @@ function evaluate(virtualNode) {
 
 function sync(virtualNode, realNode) {
     // Sync element
-    if (virtualNode.props ) {
+    if (virtualNode.props) {
         Object.entries(virtualNode.props).forEach(([name, value]) => {
             if (name === 'key' || name === 'children') {
                 return

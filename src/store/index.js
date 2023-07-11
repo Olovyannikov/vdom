@@ -1,22 +1,43 @@
 import {api, stream} from "../helpers.js";
-import {renderView} from "../main.jsx";
 
-let state = {
+const initialState = {
     time: new Date(),
-    lots: null
+    lots: null,
 }
 
-api.get('/lots').then((lots) => {
-    state = {
-        ...state,
-        lots
+class Store {
+    constructor(initialState) {
+        this.state = initialState;
+        this.listeners = [];
     }
 
-    renderView(state)
+    subscribe(callback) {
+        this.listeners.push(callback);
+    }
+
+    getState() {
+        return this.state;
+    }
+
+    changeState(diff){
+        this.state = {
+            ...this.state,
+            ...(typeof diff === 'function' ? diff(this.state) : diff)
+        };
+
+        this.listeners.forEach(listener => {
+            listener();
+        })
+    }
+}
+
+const store = new Store(initialState);
+
+api.get('/lots').then((lots) => {
+    store.changeState({lots})
 
     const onPrice = (data) => {
-        state = {
-            ...state,
+        store.changeState(state =>({
             lots: state.lots.map((lot) => {
                 if (lot.id === data.id) {
                     return {
@@ -26,8 +47,7 @@ api.get('/lots').then((lots) => {
                 }
                 return lot
             })
-        }
-        renderView(state)
+        }));
     }
 
     lots.forEach((lot) => {
@@ -36,13 +56,10 @@ api.get('/lots').then((lots) => {
 });
 
 setInterval(() => {
-    state = {
-        ...state,
+    store.changeState({
         time: new Date()
-    }
-
-    renderView(state)
+    });
 }, 1000)
 
 
-export {state};
+export {store};

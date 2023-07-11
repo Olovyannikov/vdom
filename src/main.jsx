@@ -1,6 +1,6 @@
 import {render, VDom} from "@/jsx";
 import {App} from "./App.jsx";
-import {state} from "./store/index.js";
+import {store} from "./store/index.js";
 
 export function renderView (state) {
     render(
@@ -9,4 +9,7 @@ export function renderView (state) {
     )
 }
 
-renderView(state);
+renderView(store.getState());
+store.subscribe(() => {
+    renderView(store.getState())
+});
