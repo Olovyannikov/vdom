@@ -8,8 +8,8 @@ export function App ({ state }) {
     return (
         <div className='app'>
             <Header/>
-            <Clock time={state.time}/>
-            <Lots lots={state.lots}/>
+            <Clock time={state.clock.time}/>
+            <Lots lots={state.auction.lots}/>
         </div>
     )
 }

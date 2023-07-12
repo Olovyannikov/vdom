@@ -1,65 +1,42 @@
-import {api, stream} from "../helpers.js";
-
-const initialState = {
-    time: new Date(),
-    lots: null,
-}
-
+import {clockReducer} from "./clock";
+import {auctionReducer} from "./auction";
 class Store {
-    constructor(initialState) {
-        this.state = initialState;
+    constructor(reducer, initialState) {
+        this.reducer = reducer;
+        this.state = reducer(initialState, {type: null});
         this.listeners = [];
     }
 
-    subscribe(callback) {
-        this.listeners.push(callback);
+    subscribe(listener) {
+        this.listeners.push(listener);
+
+        return () => {
+            const idx = this.listeners.indexOf(listener);
+            this.listeners.splice(idx, 1);
+        }
+    }
+
+    dispatch(action) {
+        this.state = this.reducer(this.state, action);
+        this.listeners.forEach(listener => listener());
     }
 
     getState() {
         return this.state;
     }
-
-    changeState(diff){
-        this.state = {
-            ...this.state,
-            ...(typeof diff === 'function' ? diff(this.state) : diff)
-        };
-
-        this.listeners.forEach(listener => {
-            listener();
-        })
-    }
 }
 
-const store = new Store(initialState);
+function combineReducers(reducers) {
+    return (state = {}, action) => {
+        const result = {};
+        Object.entries(reducers).forEach(([key, reducer]) => {
+            result[key] = reducer(state[key], action);
+        });
 
-api.get('/lots').then((lots) => {
-    store.changeState({lots})
-
-    const onPrice = (data) => {
-        store.changeState(state =>({
-            lots: state.lots.map((lot) => {
-                if (lot.id === data.id) {
-                    return {
-                        ...lot,
-                        price: data.price
-                    }
-                }
-                return lot
-            })
-        }));
+        return result;
     }
-
-    lots.forEach((lot) => {
-        stream.subscribe(`price-${lot.id}`, onPrice)
-    })
-});
-
-setInterval(() => {
-    store.changeState({
-        time: new Date()
-    });
-}, 1000)
-
-
-export {store};
+}
+export const store = new Store(combineReducers({
+    clock: clockReducer,
+    auction: auctionReducer
+}));
