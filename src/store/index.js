@@ -1,5 +1,6 @@
 import {clockReducer} from "./clock";
 import {auctionReducer} from "./auction";
+
 class Store {
     constructor(reducer, initialState) {
         this.reducer = reducer;

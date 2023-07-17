@@ -4,7 +4,7 @@ import {defineConfig} from "vite";
 export default defineConfig({
     esbuild: {
         jsxImportSource: './src/jsx-runtime',
-        jsxFactory: 'VDom.createElement'
+        jsxFactory: 'VDom.createElement',
     },
     resolve: {
         alias: [

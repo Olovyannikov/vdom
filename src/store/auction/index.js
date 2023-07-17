@@ -13,11 +13,37 @@ export const auctionReducer = (state = auctionInitialState, action) => {
         case AUCTION_ACTION_TYPE.CHANGE_LOT_PRICE:
             return {
                 ...state,
-                lots: state.lots.map(lot => {
+                lots: state?.lots.map(lot => {
                     if (lot.id === action.id) {
                         return {
                             ...lot,
                             price: action.price
+                        }
+                    }
+                    return lot;
+                })
+            }
+        case AUCTION_ACTION_TYPE.FAVORITE_LOT:
+            return {
+                ...state,
+                lots: state?.lots.map(lot => {
+                    if (lot.id === action.id) {
+                        return {
+                            ...lot,
+                            favorite: true
+                        }
+                    }
+                    return lot;
+                })
+            }
+        case AUCTION_ACTION_TYPE.UNFAVORITE_LOT:
+            return {
+                ...state,
+                lots: state?.lots.map(lot => {
+                    if (lot.id === action.id) {
+                        return {
+                            ...lot,
+                            favorite: false
                         }
                     }
                     return lot;

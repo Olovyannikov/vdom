@@ -1,15 +1,15 @@
-import {VDom} from './jsx-runtime';
+import {VDom} from '@/jsx';
 
 import {Header} from './components/Header';
-import {Clock} from './components/Clock';
-import {Lots} from './components/Lots';
+import {ClockWrapper} from "./components/ClockWrapper/index.jsx";
+import {LotsWrapper} from "./components/LotsWrapper/index.jsx";
 
-export function App ({ state }) {
+export function App () {
     return (
         <div className='app'>
             <Header/>
-            <Clock time={state.clock.time}/>
-            <Lots lots={state.auction.lots}/>
+            <ClockWrapper />
+            <LotsWrapper />
         </div>
     )
 }

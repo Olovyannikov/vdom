@@ -5,19 +5,25 @@ import {api, stream} from "./helpers.js";
 
 import {store} from "./store/index.js";
 
+import {StoreContext} from "./context/StoreContext.js";
 import {changeLotPrice, setLots} from "./store/auction/actions.js";
+import {setTime} from "./store/clock/actions.js";
 
-export function renderView(state) {
+export function renderView() {
     render(
-        <App state={state}/>,
+        <StoreContext.Provider value={store}>
+            <App/>
+        </StoreContext.Provider>,
         document.getElementById('root')
-    )
+    );
 }
 
-renderView(store.getState());
 store.subscribe(() => {
-    renderView(store.getState())
-});
+    renderView()
+})
+
+renderView()
+
 
 // ####
 api.get('/lots').then((lots) => {
@@ -29,3 +35,7 @@ api.get('/lots').then((lots) => {
         })
     })
 });
+
+setInterval(() => {
+    store.dispatch(setTime(new Date()))
+}, 1000)

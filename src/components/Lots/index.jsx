@@ -1,15 +1,15 @@
 import {VDom} from "@/jsx";
 import {Loading} from "../Loading/index.jsx";
-import {Lot} from "../Lot/index.jsx";
+import {LotWrapper} from "../LotWrapper/index.jsx";
 
 export function Lots ({ lots }) {
-    if (lots === null) {
-        <Loading/>
+    if (!lots) {
+        return <Loading/>
     }
 
     return (
         <div className="lots">
-            {lots?.map((lot) => <Lot lot={lot} key={lot.id}/>)}
+            {lots?.map((lot) => <LotWrapper lot={lot} key={lot.id}/>)}
         </div>
     )
 }

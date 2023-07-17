@@ -13,7 +13,44 @@ export const VDom = {
             type,
             key,
             props
+        };
+    },
+    Component: class {
+        constructor(props) {
+            this.props = props;
+            this.state = {};
         }
+
+        setState(newState) {
+            this.state = { ...this.state, ...newState };
+            this.forceUpdate();
+        }
+
+        forceUpdate() {
+            // Реализация синхронизации компонента с реальным DOM
+            const virtualNode = this.render();
+            const realNode = this.__realNode;
+            sync(virtualNode, realNode);
+        }
+
+        componentDidMount() {}
+
+        componentWillUnmount() {}
+
+        render() {}
+    },
+    createContext(defaultValue) {
+        const context = {
+            defaultValue,
+            current: defaultValue,
+            Provider: ({ value, children }) => {
+                context.current = value;
+                return children;
+            },
+            Consumer: ({ children }) => children(context.current || defaultValue)
+        };
+
+        return context;
     }
 }
 
@@ -36,12 +73,20 @@ export function render(virtualDom, realDomRoot) {
 
 // Any - Так как передать можно по факту любой элемент
 function evaluate(virtualNode) {
+    console.log(virtualNode)
     if (typeof virtualNode !== 'object') {
-        return virtualNode
+        return virtualNode;
     }
 
     if (typeof virtualNode.type === 'function') {
-        return evaluate((virtualNode.type)(virtualNode.props))
+        if (virtualNode.type.prototype instanceof VDom.Component) {
+            // Создание экземпляра класса с использованием оператора new
+            const componentInstance = new virtualNode.type(virtualNode.props);
+            return evaluate(componentInstance.render());
+        } else {
+            // Вызов функционального компонента и рекурсивный вызов evaluate для его результата
+            return evaluate(virtualNode.type(virtualNode.props));
+        }
     }
 
     const props = virtualNode.props || {}
@@ -77,6 +122,10 @@ function sync(virtualNode, realNode) {
     }
     if (typeof virtualNode !== 'object' && virtualNode !== realNode.nodeValue) {
         realNode.nodeValue = virtualNode
+    }
+
+    if (virtualNode.type instanceof VDom.Component) {
+        virtualNode.__realNode = realNode;
     }
 
     // Sync child nodes

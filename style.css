@@ -117,14 +117,13 @@ button {
   padding: 4px 6px;
   font-size: 0.8rem;
   outline: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 button:disabled {
   cursor: wait;
-}
-
-button * {
-  vertical-align: middle;
 }
 
 button.favorite {

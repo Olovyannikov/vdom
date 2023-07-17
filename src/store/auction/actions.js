@@ -10,3 +10,12 @@ export const changeLotPrice = (id, price) => ({
     id,
     price
 });
+
+export const favoriteLot = (id) => ({
+    type: AUCTION_ACTION_TYPE.FAVORITE_LOT,
+    id
+});
+export const unfavoriteLot = (id) => ({
+    type: AUCTION_ACTION_TYPE.UNFAVORITE_LOT,
+    id
+});
